@@ -1,0 +1,133 @@
+join(", ", ["app", "db", "proxy"])
+# => "app, db, proxy"
+
+split("-", "db-01-prod")
+# => ["db", "01", "prod"]
+
+replace("v1.2.3", ".", "-")
+# => "v1-2-3"
+
+format("web-%02d", 1)
+# => "web-01"
+
+
+🔤 Примеры использования строковых функций
+🎯 Имя ресурса с привязкой к окружению
+
+locals {
+  env  = "prod"
+  name = "backend"
+}
+
+output "full_name" {
+  value = format("%s-%s", local.name, local.env)
+  # => "backend-prod"
+}
+
+🎯 Генерация пути к файлу
+
+locals {
+  env  = "stage"
+  name = "backend"
+}
+
+output "config_path" {
+  value = format("/etc/%s/%s.conf", local.env, local.name)
+  # => "/etc/stage/backend.conf"
+}
+
+🎯 Замена символов в версии
+
+locals {
+  version_raw = "v1.2.3"
+}
+
+output "version_safe" {
+  value = replace(local.version_raw, ".", "-")
+  # => "v1-2-3"
+}
+
+🎯 Генерация имени Docker-образа
+
+locals {
+  project    = "myapp"
+  env        = "dev"
+  version    = "1.0.5"
+  image_name = format("registry.local/%s/%s:%s", local.env, local.project, replace(local.version, ".", "-"))
+}
+
+output "docker_image" {
+  value = local.image_name
+  # => "registry.local/dev/myapp:1-0-5"
+}
+
+📋
+
+##################################################
+
+length(["a", "b", "c"])
+# => 3
+
+tolist(set("a", "b"))
+# => ["a", "b"]
+
+flatten([["a"], ["b", "c"]])
+# => ["a", "b", "c"]
+
+concat(["x"], ["y", "z"])
+# => ["x", "y", "z"]
+
+🎯 Объединение IP-адресов в строку
+
+locals {
+  ips = ["10.0.0.1", "10.0.0.2", "10.0.0.3"]
+}
+
+output "ip_list" {
+  value = join(", ", local.ips)
+  # => "10.0.0.1, 10.0.0.2, 10.0.0.3"
+}
+
+🎯 Генерация IP-адресов по шаблону (с использованием count)
+
+resource "proxmox_lxc" "vm" {
+  count    = 3
+  hostname = format("app-%02d", count.index + 1)
+  ip       = format("192.168.22.%d/24", count.index + 10)
+  ...
+}
+
+🎯 Использование flatten
+
+locals {
+  nested = [["a"], ["b", "c"]]
+  flat   = flatten(local.nested)
+}
+
+output "flat_result" {
+  value = local.flat
+  # => ["a", "b", "c"]
+}
+
+##################################################
+
+
+
+1    Создай locals с данными:
+
+locals {
+  names = ["frontend", "backend", "db"]
+  env   = "prod"
+}
+
+2    Сформируй список имён с префиксом окружения:
+
+locals {
+  full_names = [for name in local.names : format("%s-%s", name, local.env)]
+}
+
+3    Объедини их в одну строку:
+
+output "joined_names" {
+  value = join(", ", local.full_names)
+}
