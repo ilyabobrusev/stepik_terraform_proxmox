@@ -1,7 +1,8 @@
 .idea/
 .vscode/
-terraform.tfvars
 ssh/
 .terraform/
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
 secret.txt
-
