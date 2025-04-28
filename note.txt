@@ -1,0 +1,124 @@
+vi ~/.terraformrc
+
+provider_installation {
+  network_mirror {
+    url = "https://terraform-mirror.yandexcloud.net/"
+    include = ["registry.terraform.io/*/*"]
+  }
+  direct {
+    exclude = ["registry.terraform.io/*/*"]
+  }
+}
+
+###########################################
+
+terraform init
+terraform fmt
+terraform validate
+terraform plan
+terraform apply
+terraform apply -auto-approve
+terraform destroy
+terraform destroy -auto-approve
+
+###########################################
+
+export TF_VAR_pm_api_token_secret="zzxxcc"
+
+terraform apply -auto-approve -var="pm_api_token_secret=zzxxcc"
+
+###########################################
+
+Основные команды для работы со state
+Команда 	Описание
+terraform init 	Инициализирует проект, настраивает backend для state
+terraform plan 	Показывает изменения относительно текущего state
+terraform apply 	Применяет изменения и обновляет state
+terraform destroy 	Уничтожает ресурсы и обновляет state
+terraform state list 	Выводит все ресурсы, записанные в state
+terraform state show <addr> 	Показывает информацию по ресурсу из state
+terraform state rm <addr> 	Удаляет ресурс из state (не затрагивая внешний объект)
+terraform state mv <src> <dst> 	Перемещает запись в state
+
+    Пример <src> и <dst>: пусть ранее ресурс имел адрес
+
+    proxmox_virtual_environment_download_file.iso
+
+    и вы хотите переименовать его в
+
+    proxmox_virtual_environment_download_file.ubuntu_image
+
+    Тогда выполните:
+
+    terraform state mv proxmox_virtual_environment_download_file.iso proxmox_virtual_environment_download_file.ubuntu_image
+    ```                                     |
+
+    Пример <addr>: если terraform state list выводит:
+
+    proxmox_virtual_environment_vm.ubuntu_vm
+    proxmox_virtual_environment_download_file.iso
+
+    то чтобы отвязать ISO, используйте:
+
+    terraform state rm proxmox_virtual_environment_download_file.iso
+
+###########################################
+
+backend.tf для S3:
+
+terraform {
+  backend "s3" {
+    bucket  = "my-terraform-state-bucket"
+    key     = "project/name/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
+}
+
+backend.tf для GitLab Remote:
+
+terraform {
+  backend "gitlab" {
+    address = "https://gitlab.com"
+    project = "my-group/my-terraform-state"
+    token   = var.gitlab_token
+    lock    = true
+  }
+
+Backend 	Описание 	Пример конфигурации
+local 	Локальный файл 	(по умолчанию)
+s3 	AWS S3 	backend "s3" { ... }
+consul 	Consul KV 	backend "consul" { ... }
+azurerm 	Azure Storage 	backend "azurerm" { ... }
+gcs 	Google Cloud Storage 	backend "gcs" { ... }
+gitlab 	GitLab Remote 	backend "gitlab" { ... }
+
+###########################################
+
+Terraform: count и for_each (официальная документация)
+👉 https://developer.hashicorp.com/terraform/language/meta-arguments/count
+
+Terraform: Условные выражения
+👉 https://developer.hashicorp.com/terraform/language/expressions/conditionals
+
+Terraform: locals
+👉 https://developer.hashicorp.com/terraform/language/values/locals
+
+Terraform: Модули
+👉 https://developer.hashicorp.com/terraform/language/modules/syntax
+
+###########################################
+
+Terraform поддерживает десятки встроенных функций, с помощью которых можно:
+
+    обрабатывать списки и карты (length, join, merge, flatten)
+
+    делать условия (contains, lookup, try)
+
+    преобразовывать типы (toset, tolist, tostring)
+
+    читать внешние файлы (file, templatefile)
+
+    работать с путями (dirname, basename, path.module)
+
+###########################################
