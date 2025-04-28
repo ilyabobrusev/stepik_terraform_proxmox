@@ -1,3 +1,16 @@
 terraform plan -var="enable_monitoring=true"
 terraform apply -var="enable_monitoring=true" -auto-approve
 terraform destroy -auto-approve
+
+
+    Terraform: count и for_each (официальная документация)
+    👉 https://developer.hashicorp.com/terraform/language/meta-arguments/count
+
+    Terraform: Условные выражения
+    👉 https://developer.hashicorp.com/terraform/language/expressions/conditionals
+
+    Terraform: locals
+    👉 https://developer.hashicorp.com/terraform/language/values/locals
+
+    Terraform: Модули
+    👉 https://developer.hashicorp.com/terraform/language/modules/syntax
