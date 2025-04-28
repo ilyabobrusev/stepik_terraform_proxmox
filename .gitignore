@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+terraform.tfvars
+ssh/
+.terraform/
+secret.txt
+

@@ -1,0 +1,7 @@
+# Rename terraform.tfvars.example to terraform.tfvars
+# Set your variables
+
+pm_api_url      = "https://proxmox.url/api2/json"
+pm_token_id     = "user@cluster!id"
+pm_token_secret = "zz-xx-cc-vv-bb"
+pm_tls          = true or false

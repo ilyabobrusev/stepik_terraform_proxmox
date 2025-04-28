@@ -1,0 +1,29 @@
+vi ~/.terraformrc
+
+provider_installation {
+  network_mirror {
+    url = "https://terraform-mirror.yandexcloud.net/"
+    include = ["registry.terraform.io/*/*"]
+  }
+  direct {
+    exclude = ["registry.terraform.io/*/*"]
+  }
+}
+
+###########################################
+
+terraform init
+terraform fmt
+terraform validate
+terraform plan
+terraform apply
+terraform apply -auto-approve
+terraform destroy
+terraform destroy -auto-approve
+
+###########################################
+
+export TF_VAR_pm_api_token_secret="zzxxcc"
+
+terraform apply -auto-approve -var="pm_api_token_secret=zzxxcc"
+
