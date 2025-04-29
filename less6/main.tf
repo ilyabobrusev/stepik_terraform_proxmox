@@ -1,6 +1,6 @@
 module "monitoring" {
-  count  = var.enable_monitoring ? 1 : 0
-  source = "./modules/monitoring"
+  count         = var.enable_monitoring ? 1 : 0
+  source        = "./modules/monitoring"
   prometheus_ip = "192.168.1.253/24"
 }
 
