@@ -131,3 +131,99 @@ locals {
 output "joined_names" {
   value = join(", ", local.full_names)
 }
+
+
+########################################################
+
+map
+
+Ассоциативный массив с ключами и значениями одного типа.
+
+variable "region_images" {
+  type = map(string)
+  default = {
+    ru-central = "image-1"
+    eu-west    = "image-2"
+  }
+}
+
+object
+
+Набор полей с заранее определёнными типами.
+
+variable "vm_config" {
+  type = object({
+    cpu    = number
+    memory = number
+    name   = string
+  })
+}
+
+merge(map1, map2, ...)
+
+Объединяет несколько map в одну структуру (второй перезаписывает ключи первого).
+
+locals {
+  base = {
+    cpu = 2
+    disk = 20
+  }
+
+  override = {
+    disk = 40
+  }
+
+  final = merge(local.base, local.override)
+  # => { cpu = 2, disk = 40 }
+}
+
+########################################################
+
+🧩 Примеры использования
+🎯 Пример 1: передача настроек в модуль
+
+module "vm" {
+  source = "./modules/lxc"
+  config = {
+    name   = "web-01"
+    memory = 1024
+    cores  = 2
+  }
+}
+
+🎯 Пример 2: объединение конфигураций по средам
+
+locals {
+  default = {
+    cores = 2
+    swap  = 256
+  }
+  prod = {
+    memory = 2048
+    swap   = 512
+  }
+
+  final_config = merge(local.default, local.prod)
+  # => { cores = 2, memory = 2048, swap = 512 }
+}
+
+🎯 Пример 3: использование map в for_each
+
+variable "containers" {
+  default = {
+    app1 = { ip = "192.168.22.10", role = "web" },
+    app2 = { ip = "192.168.22.11", role = "db"  }
+  }
+}
+
+resource "proxmox_lxc" "ct" {
+  for_each = var.containers
+
+  hostname = each.key
+  ip       = each.value.ip
+  ...
+}
+
+########################################################
+
+
