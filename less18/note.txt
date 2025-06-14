@@ -1,0 +1,6 @@
+pveum role add TerraformUser -privs "Datastore.Allocate Datastore.AllocateSpace Datastore.Audit VM.Allocate VM.Audit VM.PowerMgmt Sys.Audit VM.Config.Cloudinit VM.Config.CDROM VM.Config.CPU VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options"
+
+pveum user add terraform2@pve --password 'CHANGE_ME' --comment 'Terraform user 2'
+
+pveum acl modify / -user terraform2@pve -role TerraformUser -propagate 1
+
