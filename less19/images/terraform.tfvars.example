@@ -1,0 +1,8 @@
+# Rename terraform.tfvars.example to terraform.tfvars
+# Set your variables
+
+endpoint = "https://proxmox.url/"
+api_token = "uername@pve!token-name=zz-xx-cc-vv-bb"
+node_name = "pve-node"
+image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+file_name = "jammy-server-cloudimg-amd64.img"
