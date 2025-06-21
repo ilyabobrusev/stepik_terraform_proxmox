@@ -1,0 +1,11 @@
+# Rename terraform.tfvars.example to terraform.tfvars
+# Set your variables
+
+endpoint = "https://proxmox.url/"
+api_token = "uername@pve!token-name=zz-xx-cc-vv-bb"
+node_name = "pve-node"
+
+# Or set env variables
+export PROXMOX_VE_ENDPOINT=https://pve.example:8006/
+export PROXMOX_VE_API_TOKEN="user@pam!tf=..."
+export PROXMOX_VE_INSECURE=true

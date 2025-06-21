@@ -1,0 +1,29 @@
+#cloud-config
+
+ssh_pwauth: true
+package_update: true
+package_upgrade: true
+
+users:
+  - default
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ${ssh_key}
+
+#ssh_pwauth: true
+# ubuntu:ubuntu
+# openssl passwd -6 -salt $(openssl rand -base64 6)
+chpasswd:  # если нужен пароль, не рекомендуется
+  list: |
+    ubuntu:$6$tAB9Pxd/$l923wBLzgzeonqR233vUoUXF1zP/5JmVFXsr47G6TBC8lRzCmYp/jDr9Z0DEZeXOHFu7N0VOYZ7hcXgKzxO0Z1
+  expire: false
+
+packages:
+  - qemu-guest-agent
+  - vim # здесь можно перечислить любые нужные пакеты
+
+runcmd:
+  - systemctl enable --now qemu-guest-agent
+  - echo "Guest agent installed" > /var/log/guest-agent.log
